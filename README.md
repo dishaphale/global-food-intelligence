@@ -9,83 +9,131 @@ An end-to-end data engineering pipeline for food and nutrition analytics using P
 [![MySQL](https://shields.io)](https://mysql.com)
 [![PowerBI](https://shields.io)](https://microsoft.com)
 
-##  Project Overview
-Global Food Intelligence is an end-to-end data engineering pipeline designed to ingest, clean, model, and visualize food product data. By extracting raw, deeply nested JSON records from the public **Open Food Facts API**, the pipeline automates data transformation through an **ETL (Extract, Transform, Load)** workflow, storing relational data in **MySQL** and delivering production-ready business intelligence via **Power BI**.
+## Project Overview
 
----
+This project focuses on collecting, cleaning, transforming, and analysing food product data from the Open Food Facts API. The pipeline uses Python and Pandas for data processing, MySQL for data storage, SQL for transformation and analysis, and Power BI for dashboard development.
 
-##  System Architecture & Data Flow
+The objective is to demonstrate how raw API data can be converted into structured information and meaningful nutrition-related insights.
 
-`Open Food Facts API` ➔ `Python (Requests)` ➔ `Raw JSON staging` ➔ `Pandas Cleaning & Typing` ➔ `MySQL Relational Storage` ➔ `SQL Aggregations & Transformations` ➔ `Power BI Interactive Dashboard`
+## Project Objectives
 
----
+* Collect food product data from a public API.
+* Store raw API responses in JSON format.
+* Clean and prepare data using Python and Pandas.
+* Store structured data in MySQL.
+* Perform data transformation and analysis using SQL.
+* Present nutrition-related insights through a Power BI dashboard.
 
-##  Technical Stack & Implementation Details
+## Technologies Used
 
-* **Data Ingestion (Python & Requests):** Formatted dynamic API queries to extract multi-country product information, handling raw nested JSON payloads.
-* **Data Cleansing & Preprocessing (Pandas):** Implemented data-type enforcement, isolated relevant nutritional matrices (calories, sugars, proteins), handled structural inconsistencies, and exported deterministic CSV states.
-* **Relational Database Management (MySQL):** Designed and deployed a normalized schema optimized for analytical query execution.
-* **Data Transformation (Advanced SQL):** Developed performant analytical queries leveraging aggregate functions, conditional filtering, and ranking windows to isolate key nutritional distributions.
-* **Business Intelligence (Power BI):** Designed a high-fidelity dashboard incorporating advanced DAX measures, dynamic filtering, and custom-styled KPI components.
+* Python
+* Requests
+* Pandas
+* Open Food Facts API
+* JSON and CSV
+* MySQL
+* SQL
+* Power BI
 
----
+## Project Workflow
 
-##  Analytics Framework (SQL)
-The pipeline computes six core analytical views within the database layer:
-* **Nutritional Density Matrix:** Comparative analysis of average calories, sugar, fat, and protein across discrete food categories.
-* **Outlier Analysis (Sugar/Protein):** Isolation queries identifying the top 10 highest-sugar and highest-protein products using structured sorting.
-* **Nutri-Score Distribution Profiles:** Frequency metrics tracking the distribution of recorded Nutri-Score grades (`A` through `E`).
-* **Geographical Distribution:** Group-by aggregations identifying dominant market values across international boundaries.
-* **Correlation Mapping:** Bivariate evaluation analyzing the relationship between sugar volume and overall calorie content.
+Open Food Facts API → Data Ingestion → Raw JSON Storage → CSV Extraction → Data Cleaning → MySQL Storage → SQL Transformation and Analysis → Power BI Dashboard
 
----
+## SQL Analysis
 
-##  Power BI Dashboard Preview
-<img width="1307" height="732" alt="dashboard_screenshot" src="https://github.com/user-attachments/assets/9ff326f7-9d38-4c0f-bf11-7394e4b6cf47" />
+The project includes six analytical queries:
+
+1. **Nutrition Comparison by Category** — Compares average calories, sugar, fat, and protein across food categories.
+2. **Top 10 Products by Sugar Content** — Identifies products with the highest recorded sugar values.
+3. **Nutri-Score Distribution** — Analyses the distribution of recorded Nutri-Score grades.
+4. **Country Values by Product Count** — Identifies the most frequently occurring country values in the dataset.
+5. **Top 10 Products by Protein Content** — Identifies products with the highest recorded protein values.
+6. **Sugar vs. Calories Analysis** — Explores the relationship between sugar and calorie values.
+
+## Power BI Dashboard
+
+The dashboard presents key metrics and visualisations for exploring the food product dataset.
+
+### Key Performance Indicators
+
+| KPI              | Description                                 |
+| ---------------- | ------------------------------------------- |
+| Total Products   | Number of products included in the analysis |
+| Average Calories | Average recorded calorie content            |
+| Average Sugar    | Average recorded sugar content              |
+| Average Protein  | Average recorded protein content            |
+| Average Fat      | Average recorded fat content                |
+
+### Dashboard Visualisations
+
+* Average Calories by Food Category
+* Top 10 Products by Sugar Content
+* Nutri-Score Distribution
+* Country Values by Product Count
+* Top 10 Products by Protein Content
+* Sugar vs. Calories Scatter Plot
+
+### Dashboard Preview
 
 ![Global Food Intelligence Dashboard](dashboard/dashboard_screenshot.png)
 
----
+## Repository Structure
 
-##  Repository Blueprint
 ```text
 global-food-intelligence/
-├── python/          # ETL pipelines and ingestion scripts
-├── sql/             # DDL schemas, constraints, and analytical queries
-├── data/            # Local staging data (staged raw JSON & cleaned target CSVs)
-├── dashboard/       # .pbix source files and layout assets
-├── REQUIREMENTS.txt # Python dependency configurations
-└── README.md        # Technical documentation
+├── python/
+│   ├── food_api_test.py
+│   ├── food_data_ingestion.py
+│   ├── clean_food_data.py
+│   └── prepare_mysql_csv.py
+├── sql/
+│   ├── create_database.sql
+│   ├── data_transformation.sql
+│   └── data_analysis.sql
+├── data/
+│   ├── food_products_raw.json
+│   └── food_products_cleaned.csv
+├── dashboard/
+│   ├── food_intelligence_dashboard.pbix
+│   └── dashboard_screenshot.png
+├── requirements.txt
+└── README.md
 ```
 
----
+## Setup and Execution
 
-##  Execution & Setup Guide
+### Requirements
 
-### 1. Environment Setup
-Clone the repository and install the verified dependencies:
+* Python 3.x
+* MySQL Server and MySQL Workbench
+* Power BI Desktop
+
+### Install Python Dependencies
+
 ```bash
-git clone https://github.com
-cd global-food-intelligence
 pip install -r requirements.txt
 ```
 
-### 2. Database Initialization
-1. Execute the schema initialization script located in `/sql` to create the target database and tables.
-2. Run the Python ETL pipeline to populate the staging environment.
-3. Execute the transformation scripts to prepare the reporting layer for Power BI connection.
+### Database Setup
 
----
+1. Execute `create_database.sql` to create the database and original table.
+2. Import the prepared food product dataset into MySQL.
+3. Execute `data_transformation.sql` to create the transformed table.
+4. Execute `data_analysis.sql` to run the analytical queries.
 
-##  Data Quality & Pipeline Constraints
-* **Upstream Data Dependency:** Analytical accuracy is bound to the crowdsourced data integrity of the Open Food Facts ecosystem. Missing metrics are handled gracefully via pipeline exceptions.
-* **Data Ingestion Truncation:** During the data loading phase, raw payload records with structural schema violations or data type incompatibilities were strictly filtered to enforce strict database constraints, resulting in 408 verified reporting records.
-* **Geographical Strings:** Country-level data features multi-value entries; counts reflect instance presence rather than completely normalized geopolitical boundaries.
+### Dashboard
 
----
+Open `food_intelligence_dashboard.pbix` from the `dashboard` folder using Power BI Desktop. Configure the appropriate data-source connection if refreshing the data.
 
-##  Author
-**Disha**  
-*B.Sc. Data Science (Third Year Student)*  
-Specializing in Data Engineering Pipelines & Relational Analytics.
+## Limitations
 
+* The analysis depends on the availability and quality of data provided by Open Food Facts.
+* Some products may contain incomplete nutritional information.
+* Categories and country values may contain multiple entries or variations.
+* Country counts reflect the country values stored in the dataset and do not necessarily represent normalised counts of individual countries.
+* The findings represent the collected dataset and should not be generalised to all food products worldwide.
+
+## Author
+
+**Disha**
+B.Sc. Data Science — Third Year
