@@ -1,0 +1,28 @@
+use amazon_analytics;
+CREATE TABLE amazon_ecommerce_cleaned (
+    user_id VARCHAR(20),
+    product_id VARCHAR(20),
+    category VARCHAR(50),
+    subcategory VARCHAR(100),
+    brand VARCHAR(100),
+    price DECIMAL(10,2),
+    discount DECIMAL(5,2),
+    final_price DECIMAL(10,2),
+    rating DECIMAL(2,1),
+    review_count INT,
+    stock INT,
+    seller_id VARCHAR(20),
+    seller_rating DECIMAL(2,1),
+    purchase_date DATE,
+    shipping_time_days INT,
+    location VARCHAR(100),
+    device VARCHAR(50),
+    payment_method VARCHAR(50),
+    is_returned BOOLEAN,
+    delivery_status VARCHAR(30),
+    purchase_year INT,
+    purchase_month VARCHAR(20),
+    purchase_day VARCHAR(20),
+    discount_amount DECIMAL(10,2),
+    high_value_order BOOLEAN
+);
